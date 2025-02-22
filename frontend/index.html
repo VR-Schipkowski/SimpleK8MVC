@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <script>
+        const backendUrl = "http://192.168.49.2:30002";  // Use the Node IP and NodePort
+
+        // Function to add a user
+        async function addUser() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch(`${backendUrl}/add-user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+
+                if (response.ok) {
+                    alert('User added successfully!');
+                    document.getElementById('name').value = '';
+                    document.getElementById('email').value = '';
+                    displayUsers();  // Refresh the user list
+                } else {
+                    const errorText = await response.text();
+                    alert('Error adding user: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error adding user: ' + error.message);
+            }
+        }
+
+        // Function to fetch and display users
+        async function displayUsers() {
+            try {
+                const response = await fetch(`${backendUrl}/get-users`);
+                if (response.ok) {
+                    const users = await response.json();
+                    const userList = document.getElementById('user-list');
+                    userList.innerHTML = '';  // Clear the user list before adding new items
+
+                    users.forEach(user => {
+                        const li = document.createElement('li');
+                        li.textContent = `${user.name} (${user.email})`;
+                        userList.appendChild(li);
+                    });
+                } else {
+                    const errorText = await response.text();
+                    alert('Error fetching users: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error fetching users: ' + error.message);
+            }
+        }
+
+        // Initialize the user list when the page loads
+        document.addEventListener('DOMContentLoaded', displayUsers);
+    </script>
+</head>
+
+<body>
+    <h1>User Management</h1>
+
+    <!-- Form to add a new user -->
+    <form onsubmit="event.preventDefault(); addUser();">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <h2>User List</h2>
+    <ul id="user-list">
+        <!-- The user list will be populated here -->
+    </ul>
+
+    <button onclick="displayUsers()">Refresh User List</button>
+</body>
+
+</html>

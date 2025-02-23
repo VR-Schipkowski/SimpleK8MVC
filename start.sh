@@ -19,7 +19,9 @@ echo "Building Docker images..."
 docker build -t backend-image:latest ./backend
 docker build -t frontend-image:latest ./frontend
 }
-
+#WARNING: DONT DO THIS IN A REAL WORLD SCENARIO
+#this are hard coded values for the secrets
+#this is just for testing purposes, in a real world scenario DONT DO THIS!!!
 add_secret(){
     echo "Creating DB Secret secret"
     kubectl create secret generic postgres-secret   --from-literal=POSTGRES_USER=admin   --from-literal=POSTGRES_PASSWORD=securepassword   --from-literal=POSTGRES_DB=userdb

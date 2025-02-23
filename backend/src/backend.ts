@@ -27,7 +27,7 @@ app.get("/test-db-connection", async (req: Request, res: Response) => {
 });
 
 // Test backend läuft
-app.get("/test-backend", async (req: Request, res: Response) => {
+app.get("/", async (req: Request, res: Response) => {
     res.json({ status: "success", message: "Backend is running" });
 });
 // Beispielroute zum Hinzufügen eines Benutzers

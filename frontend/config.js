@@ -1,1 +1,0 @@
-window.backendUrl = "http://" + window.location.hostname + ":8080";

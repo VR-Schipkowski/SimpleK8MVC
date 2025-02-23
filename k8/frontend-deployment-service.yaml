@@ -18,9 +18,6 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80   # Port the frontend container will expose
-          env:
-            - name: BACKEND_URL
-              value: "http://backend-service:8080"  # Internal access to the backend service within the cluster
 
 ---
 apiVersion: v1
@@ -28,11 +25,9 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
-  type: NodePort  # Change the service type to NodePort
   selector:
-    app: frontend  # Match frontend pods
+    app: frontend
   ports:
     - protocol: TCP
-      port: 80        # Expose this port externally
-      targetPort: 80  # Port that the frontend container is listening on
-      nodePort: 30001 # Optional: Specify a node port (range: 30000-32767)
+      port: 80        
+      targetPort: 80
